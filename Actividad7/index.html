@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CounterComponent</title>
+</head>
+
+<body>
+
+  <!-- Implementación del Web Component -->
+  <script>
+    // Define el Web Component
+    class CounterComponent extends HTMLElement {
+      constructor() {
+        super();
+        // Estado interno del contador
+        this._counterValue = 0;
+
+        // Crear la interfaz del componente
+        const shadow = this.attachShadow({ mode: 'open' });
+
+        // Contenedor principal
+        const container = document.createElement('div');
+        container.id = 'counter-container';
+
+        // Caja con bordes y título
+        const counterBox = document.createElement('div');
+        counterBox.id = 'counter-box';
+
+        // Título de la caja
+        const title = document.createElement('div');
+        title.id = 'counter-title';
+        title.textContent = 'Contador';
+
+        // Valor del contador
+        this._counterDisplay = document.createElement('div');
+        this._counterDisplay.id = 'counter-value';
+        this._counterDisplay.textContent = this._counterValue;
+
+        // Botones de suma y resta
+        const counterButtons = document.createElement('div');
+        counterButtons.id = 'counter-buttons';
+
+        const addButton = document.createElement('button');
+        addButton.textContent = '+';
+        addButton.addEventListener('click', () => this._increment());
+
+        const subtractButton = document.createElement('button');
+        subtractButton.textContent = '-';
+        subtractButton.addEventListener('click', () => this._decrement());
+
+        // Añadir elementos al shadow DOM
+        counterBox.appendChild(title);
+        counterBox.appendChild(this._counterDisplay);
+        counterButtons.appendChild(addButton);
+        counterButtons.appendChild(subtractButton);
+        counterBox.appendChild(counterButtons);
+        container.appendChild(counterBox);
+
+        // Agregar estilos al sombreado (shadow DOM)
+        const style = document.createElement('style');
+        style.textContent = `
+        #counter-container {
+          text-align: center;
+          margin: 20px auto;
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        #counter-box {
+          border: 2px solid #3498db;
+          border-radius: 10px;
+          padding: 30px;
+          margin-bottom: 30px;
+          background-color: #ecf0f1;
+        }
+
+        #counter-title {
+          font-size: 2em;
+          margin-bottom: 15px;
+          color: #2c3e50;
+        }
+
+        #counter-value {
+          font-size: 3em;
+          margin-bottom: 25px;
+          color: #000;
+          animation: count-up 0.5s ease-out;
+        }
+
+        #counter-buttons {
+          display: flex;
+          justify-content: center;
+        }
+
+        #counter-buttons button {
+          font-size: 1.5em;
+          margin: 0 15px;
+          padding: 15px 25px;
+          cursor: pointer;
+          background-color: skyblue;
+          color: white;
+          border: none;
+          border-radius: 8px;
+          transition: background-color 0.3s ease-in-out;
+        }
+
+        #counter-buttons button:hover {
+          background-color: #3B5E80;
+        }
+
+        @keyframes count-up {
+          from {
+            opacity: 0;
+            transform: translateY(-20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        `;
+
+        // Añadir estilos al sombreado (shadow DOM)
+        shadow.appendChild(style);
+
+        // Añadir contenedor principal al sombreado (shadow DOM)
+        shadow.appendChild(container);
+      }
+
+      // Método para incrementar el contador
+      _increment() {
+        this._counterValue++;
+        this._updateDisplay();
+      }
+
+      // Método para decrementar el contador
+      _decrement() {
+        this._counterValue--;
+        this._updateDisplay();
+      }
+
+      // Método para actualizar la interfaz con el valor actual del contador
+      _updateDisplay() {
+        this._counterDisplay.textContent = this._counterValue;
+      }
+    }
+
+    // Registrar el componente personalizado
+    customElements.define('counter-component', CounterComponent);
+  </script>
+
+
+  <script type="module" src="my-container.js"></script>
+  <script type="module" src="my-header.js"></script>
+  <script type="module" src="my-content.js"></script>
+  <script type="module" src="my-footer.js"></script>
+  
+  <!-- Utilizar el componente en la página -->
+  
+  <my-container>
+    <!-- Contenido del Encabezado -->
+    <my-header slot="header"></my-header>
+    <!-- Contenido del Cuerpo -->
+    <my-content slot="content">
+      <counter-component slot="counter"></counter-component>
+    </my-content>
+
+    <!-- Contenido del Pie de Página -->
+    <my-footer slot="footer"></my-footer>
+</my-container>
+
+</body>
+
+</html>
