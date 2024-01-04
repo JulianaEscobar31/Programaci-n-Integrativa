@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Composición de Componentes</title>
+
+</head>
+
+<body>
+    <!-- Importar los archivos JavaScript de los componentes -->
+    <script type="module" src="my-container.js"></script>
+    <script type="module" src="my-header.js"></script>
+    <script type="module" src="my-content.js"></script>
+    <script type="module" src="my-footer.js"></script>
+    <script type="module" src="my-form.js"></script>
+
+    <!-- Instancia del Componente Contenedor -->
+    <my-container>
+        <!-- Contenido del Encabezado -->
+        <my-header slot="header"></my-header>
+        <!-- Contenido del Cuerpo -->
+        <my-content slot="content">
+            <my-form slot="form"></my-form>
+        </my-content>
+
+        <!-- Contenido del Pie de Página -->
+        <my-footer slot="footer"></my-footer>
+    </my-container>
+</body>
+
+</html>
